@@ -1,0 +1,10 @@
+### POST request to the example server
+POST http://localhost:8888/api/vm
+Content-Type: application/json
+
+{
+  "name": "Web Server VM",
+  "flavorId": 1,
+  "applicationId": 2,
+  "customerId": 2
+}

@@ -1,0 +1,23 @@
+name: 'pizzeria'
+
+services:
+  postgres:
+    image: postgres:16.2
+    environment:
+      - "TZ=Europe/Budapest"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=12345678"
+    ports:
+      - "5432:5432"
+
+  initdb:
+    image: ghcr.io/onedr0p/postgres-init:16.2
+    environment:
+      - "TZ=Europe/Budapest"
+      - "INIT_POSTGRES_HOST=postgres"
+      - "INIT_POSTGRES_SUPER_PASS=12345678"
+      - "INIT_POSTGRES_DBNAME=pizzeria"
+      - "INIT_POSTGRES_USER=pizzeria"
+      - "INIT_POSTGRES_PASS=12345678"
+
+

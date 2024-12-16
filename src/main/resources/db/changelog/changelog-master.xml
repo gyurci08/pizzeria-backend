@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+
+    <changeSet id="1" author="gyurci08">
+        <createTable tableName="customer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(20)"/>
+            <column name="address" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="gyurci08">
+        <createTable tableName="menu_item">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="gyurci08">
+        <createTable tableName="pizza_order">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_order_customer" references="customer(id)"/>
+            </column>
+            <column name="order_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="gyurci08">
+        <createTable tableName="order_item">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_order_item_order" references="pizza_order(id)"/>
+            </column>
+            <column name="menu_item_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_order_item_menu_item" references="menu_item(id)"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="gyurci08">
+        <createTable tableName="employee">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="gyurci08">
+        <createTable tableName="ingredient">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="stock_quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="gyurci08">
+        <createTable tableName="pizza">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="gyurci08">
+        <createTable tableName="pizza_ingredient">
+            <column name="pizza_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_pizza" references="pizza(id)"/>
+            </column>
+            <column name="ingredient_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_ingredient" references="ingredient(id)"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="pizza_ingredient" columnNames="pizza_id, ingredient_id"/>
+    </changeSet>
+
+</databaseChangeLog>
