@@ -4,19 +4,22 @@ import hu.jandzsogyorgy.pizzeriabackend.config.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
     private final JwtConfig jwtConfig;
+    private final Set<String> blacklistedTokens = Collections.synchronizedSet(new HashSet<>());
+
+
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -55,7 +58,32 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
+        if (blacklistedTokens.contains(token)) {
+            return false;
+        }
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+
+
+
+    public void invalidateToken(String token) {
+        blacklistedTokens.add(token);
+    }
+
+    @Scheduled(fixedRate = 3600000) // Run every hour
+    public void removeExpiredTokensFromBlacklist() {
+        Date now = new Date();
+        blacklistedTokens.removeIf(token -> extractExpiration(token).before(now));
+    }
+
+
+
+
+
+
+
+
+
 }

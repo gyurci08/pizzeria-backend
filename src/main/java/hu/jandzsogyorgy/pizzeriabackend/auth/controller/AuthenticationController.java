@@ -1,5 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.controller;
 
+import hu.jandzsogyorgy.pizzeriabackend.auth.dto.LogoutRequestDto;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.CustomUserDetailsService;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
@@ -36,4 +37,16 @@ public class AuthenticationController {
 
         return new AuthenticationResponseDto(jwt);
     }
+
+
+
+    @PostMapping("/logout")
+    public void logout(@RequestBody LogoutRequestDto logoutRequest) {
+        if (logoutRequest.token() != null) {
+            jwtUtil.invalidateToken(logoutRequest.token());
+        }
+    }
+
+
+
 }
