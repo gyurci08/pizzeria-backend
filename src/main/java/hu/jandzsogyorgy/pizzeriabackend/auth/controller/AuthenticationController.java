@@ -7,22 +7,26 @@ import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
 import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationRequestDto;
 import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/auth")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public AuthenticationResponseDto createAuthenticationToken(@RequestBody AuthenticationRequestDto request) {
         try {
             authenticationManager.authenticate(
@@ -42,6 +46,7 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public void logout(@RequestBody LogoutRequestDto logoutRequest) {
+        log.info("Logout request received");
         if (logoutRequest.token() != null) {
             jwtUtil.invalidateToken(logoutRequest.token());
         }
