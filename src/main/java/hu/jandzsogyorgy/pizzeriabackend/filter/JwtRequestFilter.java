@@ -1,4 +1,4 @@
-package hu.jandzsogyorgy.pizzeriabackend.auth.filter;
+package hu.jandzsogyorgy.pizzeriabackend.filter;
 
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.CustomUserDetailsService;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;

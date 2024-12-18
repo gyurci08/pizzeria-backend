@@ -1,5 +1,6 @@
 ### POST request to the example server
-POST http://localhost:8888/logout
+POST http://localhost:8888/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNDUxNjgxOSwiaWF0IjoxNzM0NTEzMjE5fQ.hhUXoSPQz4h3K5Dhm3Pw-tKvOP1l2LmKrAQ1GMkU-Mo
 Content-Type: application/json
 
 {
