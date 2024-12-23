@@ -16,6 +16,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public AuthenticationErrorResponseDto handleAuthenticationException(AuthenticationException ex) {
-        return new AuthenticationErrorResponseDto(ex.toString(), ex.getMessage());
+        return new AuthenticationErrorResponseDto(ex.getMessage());
     }
 }

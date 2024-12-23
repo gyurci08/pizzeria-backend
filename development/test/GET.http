@@ -1,3 +1,3 @@
 ### GET request to example server
-GET http://localhost:8888/api/auth/login
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNDUxNjgxOSwiaWF0IjoxNzM0NTEzMjE5fQ.hhUXoSPQz4h3K5Dhm3Pw-tKvOP1l2LmKrAQ1GMkU-Mo
+GET http://localhost:8888/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNDk2Mzg2NiwiaWF0IjoxNzM0OTYwMjY2fQ.JqxVRQgoXEITxmN35iil9dHMhoGohJuc6lYXm5bwVlM

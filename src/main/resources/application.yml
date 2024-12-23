@@ -5,6 +5,7 @@ spring:
   application:
     name: pizzeria
 
+
   datasource:
     url: jdbc:postgresql://localhost:5432/pizzeria
     username: pizzeria
@@ -13,6 +14,12 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
 
 cors:
   allowed-origins: "http://localhost:4200"
