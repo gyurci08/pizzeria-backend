@@ -5,6 +5,7 @@ import hu.jandzsogyorgy.pizzeriabackend.order.dto.PizzaOrderDto;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ import java.util.List;
 public class PizzaOrderController {
     private final PizzaOrderService pizzaOrderService;
 
-    //@PreAuthorize("hasRole('USER')")  // Method level authentication
+    //@PreAuthorize("hasRole('ADMIN')")  // Method level authentication
     @GetMapping
     public List<PizzaOrderDto> listOrders() {
         return pizzaOrderService.listOrders();
