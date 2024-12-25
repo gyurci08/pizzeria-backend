@@ -18,4 +18,6 @@ public class GlobalExceptionHandler {
     public AuthenticationErrorResponseDto handleAuthenticationException(AuthenticationException ex) {
         return new AuthenticationErrorResponseDto(ex.getMessage());
     }
+
+
 }

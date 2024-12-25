@@ -15,10 +15,6 @@ import java.util.List;
 //
 @RestController
 @RequestMapping(value = "/api/orders", produces = MediaType.APPLICATION_JSON_VALUE)
-@ApiResponse(responseCode = "200", description = "Successful request")
-@ApiResponse(responseCode = "401", description = "Unauthorized")
-@ApiResponse(responseCode = "403", description = "Forbidden")
-@ApiResponse(responseCode = "500", description = "Internal server error")
 @AllArgsConstructor
 public class PizzaOrderController {
     private final PizzaOrderService pizzaOrderService;
