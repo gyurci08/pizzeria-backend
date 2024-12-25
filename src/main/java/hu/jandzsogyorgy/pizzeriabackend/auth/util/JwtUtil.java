@@ -1,17 +1,17 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.util;
 
 import hu.jandzsogyorgy.pizzeriabackend.config.JwtConfig;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Claims;
 
 import java.util.*;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
@@ -35,11 +35,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return Jwts.parser().setSigningKey(jwtConfig.getTokenSecret()).parseClaimsJws(token).getBody();
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -52,20 +48,24 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
-                .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecret())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpiration()))
+                .signWith(SignatureAlgorithm.HS256, jwtConfig.getTokenSecret())
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        if (blacklistedTokens.contains(token)) {
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        } catch (ExpiredJwtException e) {
+            log.error("Token is expired");
             return false;
         }
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
 
 
     public void invalidateToken(String token) {
@@ -79,9 +79,16 @@ public class JwtUtil {
     }
 
 
-
-
-
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getRefreshExpiration()))
+                .signWith(SignatureAlgorithm.HS256, jwtConfig.getRefreshSecret())
+                .compact();
+    }
 
 
 

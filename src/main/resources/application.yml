@@ -29,8 +29,10 @@ cors:
 
 
 jwt:
-  secret: sOop-lwzVcoOV1_RE3yKFZ9QR4634T6zc9VLQ3rvZnk=
-  expiration: 3600000  # 1 hour in milliseconds
+  tokenSecret: sOop-lwzVcoOV1_RE3yKFZ9QR4634T6zc9VLQ3rvZnk=
+  tokenExpiration: 3600000  # 1 hour in milliseconds
+  refreshSecret: sOop-lwzVcoOV1_RE3yKFZ9QR4634T6zc9VLQ3rvZnk=
+  refreshExpiration: 604800000  # 7 days in milliseconds
 
   logging:
     level:

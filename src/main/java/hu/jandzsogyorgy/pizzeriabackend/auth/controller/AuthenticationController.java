@@ -1,10 +1,7 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.controller;
 
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.LogoutRequestDto;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.LogoutResponseDto;
+import hu.jandzsogyorgy.pizzeriabackend.auth.dto.*;
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.AuthenticationService;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationRequestDto;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +31,10 @@ public class AuthenticationController {
         return authenticationService.logout(logoutRequest, userDetails);
     }
 
+//    @PostMapping("/refresh")
+//    public AuthenticationResponseDto refreshToken(@RequestBody RefreshTokenRequestDto dto) {
+//        return authenticationService.refreshToken(dto);
+//    }
 
 
 }

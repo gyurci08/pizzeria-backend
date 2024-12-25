@@ -1,9 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.service;
 
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationRequestDto;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.AuthenticationResponseDto;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.LogoutRequestDto;
-import hu.jandzsogyorgy.pizzeriabackend.auth.dto.LogoutResponseDto;
+import hu.jandzsogyorgy.pizzeriabackend.auth.dto.*;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,23 +34,28 @@ public class AuthenticationService {
         return new AuthenticationResponseDto(jwt);
     }
 
+
+
+
+
     public LogoutResponseDto logout(LogoutRequestDto dto, UserDetails userDetails) {
-        // Check if the token is provided in the request
-        if (dto.token() == null | userDetails == null) {
-            return new LogoutResponseDto("Authentication and token is required");
+        if (dto.token() == null || userDetails == null) {
+            return new LogoutResponseDto("Authentication and token are required");
         }
 
         try {
-            // Validate the token against the authenticated user's details
             if (jwtUtil.validateToken(dto.token(), userDetails)) {
                 jwtUtil.invalidateToken(dto.token());
                 return new LogoutResponseDto("Logged out successfully");
             } else {
-                return new LogoutResponseDto("Invalid token");
+                return new LogoutResponseDto("Invalid or expired token");
             }
         } catch (Exception e) {
             log.error("Error during logout", e);
             return new LogoutResponseDto("Error during logout: " + e.getMessage());
         }
     }
+
+
+
 }
