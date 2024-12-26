@@ -3,6 +3,8 @@ package hu.jandzsogyorgy.pizzeriabackend.auth.service;
 import hu.jandzsogyorgy.pizzeriabackend.auth.dto.*;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
+import hu.jandzsogyorgy.pizzeriabackend.auth.util.TokenType;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +21,9 @@ public class AuthenticationService {
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationResponseDto login(AuthenticationRequestDto dto){
+
+
+    public LoginResponseDto login(LoginRequestDto dto) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(dto.username(), dto.password())
@@ -29,23 +33,36 @@ public class AuthenticationService {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.username());
-        final String jwt = jwtUtil.generateToken(userDetails);
+        final String accessToken = jwtUtil.createAccessToken(userDetails);
+        final String refreshToken = jwtUtil.createRefreshToken(userDetails);
 
-        return new AuthenticationResponseDto(jwt);
+        return new LoginResponseDto(accessToken, refreshToken);
+    }
+
+    public LoginResponseDto refreshToken(UserDetails userDetails, RefreshTokenRequestDto dto) {
+        try {
+            if (jwtUtil.validateToken(userDetails, TokenType.REFRESH, dto.refreshToken())) {
+                String newAccessToken = jwtUtil.createAccessToken(userDetails);
+                return new LoginResponseDto(newAccessToken, dto.refreshToken());
+            } else {
+                throw new AuthenticationException("Invalid refresh token");
+            }
+        } catch (ExpiredJwtException e) {
+            throw new AuthenticationException("Refresh token has expired");
+        }
     }
 
 
 
-
-
-    public LogoutResponseDto logout(LogoutRequestDto dto, UserDetails userDetails) {
-        if (dto.token() == null || userDetails == null) {
-            return new LogoutResponseDto("Authentication and token are required");
+    public LogoutResponseDto logout(UserDetails userDetails, LogoutRequestDto dto) {
+        if (dto.accessToken() == null || dto.refreshToken() == null || userDetails == null) {
+            return new LogoutResponseDto("Authentication and tokens are required");
         }
 
         try {
-            if (jwtUtil.validateToken(dto.token(), userDetails)) {
-                jwtUtil.invalidateToken(dto.token());
+            if (jwtUtil.validateToken(userDetails, TokenType.ACCESS, dto.accessToken())) {
+                jwtUtil.invalidateToken(dto.accessToken());
+                jwtUtil.invalidateToken(dto.refreshToken());
                 return new LogoutResponseDto("Logged out successfully");
             } else {
                 return new LogoutResponseDto("Invalid or expired token");

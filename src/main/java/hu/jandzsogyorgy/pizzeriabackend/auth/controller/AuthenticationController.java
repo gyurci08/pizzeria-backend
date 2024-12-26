@@ -19,22 +19,26 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public AuthenticationResponseDto login(@RequestBody AuthenticationRequestDto dto) {
+    public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
         return authenticationService.login(dto);
     }
 
 
 
     @PostMapping("/logout")
-    public LogoutResponseDto logout(@RequestBody LogoutRequestDto logoutRequest,
-                                    @AuthenticationPrincipal UserDetails userDetails) {
-        return authenticationService.logout(logoutRequest, userDetails);
+    public LogoutResponseDto logout(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody LogoutRequestDto logoutRequest
+    ) {
+        return authenticationService.logout(userDetails, logoutRequest);
     }
 
-//    @PostMapping("/refresh")
-//    public AuthenticationResponseDto refreshToken(@RequestBody RefreshTokenRequestDto dto) {
-//        return authenticationService.refreshToken(dto);
-//    }
+    @PostMapping("/refresh")
+    public LoginResponseDto refreshToken(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody RefreshTokenRequestDto dto) {
+        return authenticationService.refreshToken(userDetails, dto);
+    }
 
 
 }

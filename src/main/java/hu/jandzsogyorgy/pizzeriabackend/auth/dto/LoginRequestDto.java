@@ -1,6 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.dto;
 
-public record AuthenticationRequestDto(
+public record LoginRequestDto(
         String username,
         String password
 ) {

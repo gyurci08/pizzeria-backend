@@ -1,6 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.dto;
 
-public record LogoutRequestDto(
+public record LoginResponseDto(
         String accessToken,
         String refreshToken
 ) {
