@@ -1,6 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.dto;
 
-public record LoginErrorResponseDto(
+public record ErrorResponseDto(
         String message
 ) {
 }
