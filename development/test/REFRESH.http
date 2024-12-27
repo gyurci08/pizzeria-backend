@@ -1,8 +1,8 @@
 ### POST request to the example server
 POST http://localhost:8888/api/auth/refresh
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTIyODcyNiwiaWF0IjoxNzM1MjI1MTI2fQ.f6mQGXABh0kXP1yuJkbukMdIVLP3W9eSGRvRNRt25qQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTMxODMxMCwiaWF0IjoxNzM1MzE4MjUwfQ.mvS0v7rYkYHiTT3f43OXq3mxp0VtXo9u40Ogd46v6c4
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTgyOTkyNiwiaWF0IjoxNzM1MjI1MTI2fQ.UjyGbYelvJsDGGi_rzWzw_O7xzshzKnxySHCp7VZtGA"
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTkyMzA1MCwiaWF0IjoxNzM1MzE4MjUwfQ.g7JxZJA1fkuW2Yu7guv6vWQHK0IKqVSxs5UeIKItVJI"
 }

@@ -1,3 +1,8 @@
 ### GET request to example server
 GET http://localhost:8888/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTAzODU3MSwiaWF0IjoxNzM1MDM0OTcxfQ.5QJpAEF7aX9qrGy4m9UoD3bHw9huN9iyaV-eT6kXrbg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTMyNzE0MiwiaWF0IjoxNzM1MzI3MDgyfQ.it4mXK5wBXE5TP--T39yERCRARVx4OnQekT-A2g9zxE
+
+#{
+#  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTMxODMxMCwiaWF0IjoxNzM1MzE4MjUwfQ.mvS0v7rYkYHiTT3f43OXq3mxp0VtXo9u40Ogd46v6c4",
+#  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTkyMzA1MCwiaWF0IjoxNzM1MzE4MjUwfQ.g7JxZJA1fkuW2Yu7guv6vWQHK0IKqVSxs5UeIKItVJI"
+#}

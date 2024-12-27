@@ -88,8 +88,7 @@ public class JwtUtil {
             final String username = extractUsername( tokenType, token);
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(tokenType, token) && !isTokenBlacklisted(token));
         }
-        catch (ExpiredJwtException e) {
-            log.error("Token is invalid");
+        catch (ExpiredJwtException | SignatureException e) {
             return false;
         }
     }

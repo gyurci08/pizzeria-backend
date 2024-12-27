@@ -27,10 +27,10 @@ cors:
   allowed-headers: "*"
   max-age: 3600
 
-
+# 3600000  # 1 hour in milliseconds
 jwt:
   tokenSecret: sOop-lwzVcoOV1_RE3yKFZ9QR4634T6zc9VLQ3rvZnk=
-  tokenExpiration: 3600000  # 1 hour in milliseconds
+  tokenExpiration: 60000  # 1 minute in milliseconds
   refreshSecret: sOop-lwzVcoOV1_RE3yKFZ9QR4634T6zc9VLQ3rvZnk=
   refreshExpiration: 604800000  # 7 days in milliseconds
 
