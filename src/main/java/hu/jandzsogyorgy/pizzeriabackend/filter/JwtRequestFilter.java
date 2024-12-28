@@ -26,6 +26,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
+
+    // TODO: Check if exceptions can be handled in the util
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -44,7 +46,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 if (requestPath.equals("/api/auth/refresh")) {
                     logger.info("Attempting token renewal");
                     username = e.getClaims().getSubject();
-                    logger.info("Token is expired. Username: " + username);
                 }
                 else{
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
