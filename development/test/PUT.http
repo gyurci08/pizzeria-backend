@@ -1,11 +1,21 @@
 ### PUT request to the example server
 PUT http://localhost:8888/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU2MDQyMCwiaWF0IjoxNzM1NTU2ODIwfQ.Vvy8ZgIYhxVRXieJDFyyc8oeLxHNRcKUyGQmR_qFlAY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU4NDI0OSwiaWF0IjoxNzM1NTgwNjQ5fQ.9ZBVfx6aZyIBLJfOqIYwmRW6pSzkvV_s29BSe0Cc_7Y
 Content-Type: application/json
 
 {
   "customerId": 1,
-  "orderDate": "2024-12-29T12:13:00.000+00:00",
-  "totalAmount": 23.98,
+  "orderItems": [
+    {
+      "menuItemId": 1,
+      "quantity": 2,
+      "price": 10.99
+    },
+    {
+      "menuItemId": 2,
+      "quantity": 1,
+      "price": 12.99
+    }
+  ],
   "status": "PENDING"
 }

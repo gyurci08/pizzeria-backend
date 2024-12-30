@@ -1,8 +1,16 @@
 ### GET request to example server
 GET http://localhost:8888/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU1NTQ1NCwiaWF0IjoxNzM1NTUxODU0fQ.ExR9ngnsZIi0m3Hhn3wU4AxbWSFbQaLa3K7mLjv6IyY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU4ODUzNywiaWF0IjoxNzM1NTg0OTM3fQ.cz0RhJIJDd_fBimNexMPy1MhTFUZ0xHxO15pWQ-vVkk
 
 #{
-#  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTMxODMxMCwiaWF0IjoxNzM1MzE4MjUwfQ.mvS0v7rYkYHiTT3f43OXq3mxp0VtXo9u40Ogd46v6c4",
+#  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU3NTg0NiwiaWF0IjoxNzM1NTcyMjQ2fQ.3hJDpOPJo-lFmQSbPMo8oV9eMn8JrtnBDSPyWOaak5g",
 #  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTkyMzA1MCwiaWF0IjoxNzM1MzE4MjUwfQ.g7JxZJA1fkuW2Yu7guv6vWQHK0IKqVSxs5UeIKItVJI"
 #}
+
+### GET request to example server
+GET http://localhost:8888/api/orders/with-customer-names
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU4ODUzNywiaWF0IjoxNzM1NTg0OTM3fQ.cz0RhJIJDd_fBimNexMPy1MhTFUZ0xHxO15pWQ-vVkk
+
+### GET request to example server
+GET http://localhost:8888/api/orders/with-items
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU4ODUzNywiaWF0IjoxNzM1NTg0OTM3fQ.cz0RhJIJDd_fBimNexMPy1MhTFUZ0xHxO15pWQ-vVkk
