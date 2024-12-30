@@ -1,6 +1,6 @@
-package hu.jandzsogyorgy.pizzeriabackend.order.repository;
+package hu.jandzsogyorgy.pizzeriabackend.feature.pizzaOrder.repository;
 
-import hu.jandzsogyorgy.pizzeriabackend.order.entity.PizzaOrder;
+import hu.jandzsogyorgy.pizzeriabackend.feature.pizzaOrder.entity.PizzaOrder;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 

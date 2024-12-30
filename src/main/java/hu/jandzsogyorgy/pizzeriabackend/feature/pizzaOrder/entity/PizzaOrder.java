@@ -1,7 +1,8 @@
-package hu.jandzsogyorgy.pizzeriabackend.order.entity;
+package hu.jandzsogyorgy.pizzeriabackend.feature.pizzaOrder.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 

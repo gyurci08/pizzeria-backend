@@ -1,10 +1,11 @@
 ### PUT request to the example server
-PUT http://localhost:8888/api/book/12
+PUT http://localhost:8888/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU2MDQyMCwiaWF0IjoxNzM1NTU2ODIwfQ.Vvy8ZgIYhxVRXieJDFyyc8oeLxHNRcKUyGQmR_qFlAY
 Content-Type: application/json
 
 {
-  "title": "asd",
-  "isbn": "978-1617292545",
-  "authorIds": [1]
+  "customerId": 1,
+  "orderDate": "2024-12-29T12:13:00.000+00:00",
+  "totalAmount": 23.98,
+  "status": "PENDING"
 }
-
