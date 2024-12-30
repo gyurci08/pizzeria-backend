@@ -11,6 +11,7 @@ import hu.jandzsogyorgy.pizzeriabackend.feature.order.entity.Order;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.map.OrderSaveMapper;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.map.OrderMapper;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.map.OrderSaveMapper;
+import hu.jandzsogyorgy.pizzeriabackend.feature.orderItem.dto.OrderItemDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.orderItem.dto.OrderItemSaveDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.orderItem.entity.OrderItem;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.repository.OrderRepository;
@@ -97,9 +98,6 @@ public class OrderService {
                 .map(item -> item.price().multiply(BigDecimal.valueOf(item.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        List<OrderItem> items = dto.orderItems().stream().map(orderItemSaveDto ->{
-            return orderItemMapper.toEntity(orderItemService.createOrderItem(orderItemSaveDto));
-        }).toList();
 
         order.setOrderDate(LocalDateTime.now());
         order.setTotalAmount(totalAmount);
@@ -107,7 +105,12 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return orderMapper.toDtoWithItems(savedOrder, items);
+        List<OrderItemDto> items = dto.orderItems().stream().map(
+                orderItemSaveDto -> orderItemService.createOrderItem(orderItemSaveDto, order.getId())
+        ).toList();
+
+
+        return orderMapper.toDtoWithItems(savedOrder, orderItemMapper.toEntity(items));
     }
 
 

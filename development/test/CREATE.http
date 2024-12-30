@@ -1,6 +1,6 @@
-### PUT request to the example server
-PUT http://localhost:8888/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU4NDI0OSwiaWF0IjoxNzM1NTgwNjQ5fQ.9ZBVfx6aZyIBLJfOqIYwmRW6pSzkvV_s29BSe0Cc_7Y
+### POST request to the example server
+POST http://localhost:8888/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU5MTk5MCwiaWF0IjoxNzM1NTg4MzkwfQ.Y-7b3-VUKiw7CRj5tf2q6lKYaSztwmIFq0YSRKzKodQ
 Content-Type: application/json
 
 {

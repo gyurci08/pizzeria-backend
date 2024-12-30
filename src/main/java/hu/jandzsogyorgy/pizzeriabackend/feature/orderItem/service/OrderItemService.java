@@ -31,9 +31,12 @@ public class OrderItemService {
         return orderItemMapper.toDto(orderItemRepository.findAll());
     }
 
-    public OrderItemDto createOrderItem(OrderItemSaveDto dto) {
+    public OrderItemDto createOrderItem(OrderItemSaveDto dto, Long orderId) {
+        OrderItem orderItem = orderItemSaveMapper.toEntity(dto);
+        orderItem.setOrderId(orderId);
+
         return orderItemMapper.toDto(
-                orderItemRepository.save(orderItemSaveMapper.toEntity(dto))
+                orderItemRepository.save(orderItem)
         );
     }
 

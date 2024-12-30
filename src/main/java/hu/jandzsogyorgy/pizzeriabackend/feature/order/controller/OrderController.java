@@ -35,7 +35,7 @@ public class OrderController {
     }
 
 
-    @PutMapping
+    @PostMapping
     public OrderWithItemsDto createOrder(@RequestBody OrderSaveDto dto) {
         return orderService.createOrder(dto);
     }
