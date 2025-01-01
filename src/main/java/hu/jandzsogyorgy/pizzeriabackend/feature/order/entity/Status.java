@@ -5,5 +5,6 @@ public enum Status {
     CONFIRMED,
     PREPARED,
     DELIVERED,
-    COMPLETED
+    COMPLETED,
+    DELETED
 }
