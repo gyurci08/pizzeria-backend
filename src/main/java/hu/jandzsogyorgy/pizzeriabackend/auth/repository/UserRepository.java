@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends ListCrudRepository<User, Long> {
+    // TODO: Query both at the same time?
     User findByUsername(String username);
+    User findByEmail(String email);
 }

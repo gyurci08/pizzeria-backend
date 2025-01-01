@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -22,22 +23,28 @@ public class AuthenticationService {
     private final JwtUtil jwtUtil;
 
 
-
     public LoginResponseDto login(LoginRequestDto dto) {
+        UserDetails userDetails;
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(dto.username(), dto.password())
-            );
-        } catch (BadCredentialsException e) {
-            throw new AuthenticationException("Incorrect username or password");
+            userDetails = userDetailsService.loadUserByUsername(dto.username());
+        } catch (UsernameNotFoundException e) {
+            throw new AuthenticationException("Incorrect username/email or password");
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.username());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), dto.password())
+            );
+        } catch (BadCredentialsException e) {
+            throw new AuthenticationException("Incorrect username/email or password");
+        }
+
         final String accessToken = jwtUtil.createAccessToken(userDetails);
         final String refreshToken = jwtUtil.createRefreshToken(userDetails);
 
         return new LoginResponseDto(accessToken, refreshToken);
     }
+
 
     public LoginResponseDto refreshToken(UserDetails userDetails, RefreshTokenRequestDto dto) {
         try {
@@ -51,7 +58,6 @@ public class AuthenticationService {
             throw new AuthenticationException("Refresh token has expired");
         }
     }
-
 
 
     public LogoutResponseDto logout(UserDetails userDetails, LogoutRequestDto dto) {
@@ -72,7 +78,6 @@ public class AuthenticationService {
             return new LogoutResponseDto("Error during logout: " + e.getMessage());
         }
     }
-
 
 
 }
