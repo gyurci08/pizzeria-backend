@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
 
-
     <changeSet id="1" author="gyurci08">
         <createTable tableName="customer">
             <column name="id" type="bigint" autoIncrement="true">
@@ -133,7 +132,8 @@
                 <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_pizza" references="pizza(id)"/>
             </column>
             <column name="ingredient_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_ingredient" references="ingredient(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_ingredient"
+                             references="ingredient(id)"/>
             </column>
             <column name="quantity" type="int">
                 <constraints nullable="false"/>
@@ -141,9 +141,6 @@
         </createTable>
         <addPrimaryKey tableName="pizza_ingredient" columnNames="pizza_id, ingredient_id"/>
     </changeSet>
-
-
-
 
 
     <changeSet id="9" author="gyurci08">
@@ -187,8 +184,6 @@
     </changeSet>
 
 
-
-
     <changeSet id="12" author="gyurci08">
         <insert tableName="user">
             <column name="id" value="1"/>
@@ -214,10 +209,7 @@
     </changeSet>
 
 
-
-
-
-<!--    Sample order    -->
+    <!--    Sample order    -->
 
     <changeSet id="15" author="gyurci08">
         <insert tableName="customer">

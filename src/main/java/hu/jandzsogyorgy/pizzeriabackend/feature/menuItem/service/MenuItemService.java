@@ -20,4 +20,8 @@ public class MenuItemService {
         return menuItemMapper.toDto(menuItemRepository.findAll());
     }
 
+    public List<MenuItemDto> listMenuItemsByIds(List<Long> ids) {
+        return menuItemMapper.toDto(menuItemRepository.findAllById(ids));
+    }
+
 }

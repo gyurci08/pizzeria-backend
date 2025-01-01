@@ -15,5 +15,5 @@ public class Order {
     private Long customerId;
     private LocalDateTime orderDate;
     private BigDecimal totalAmount;
-    private String status;
+    private Status status;
 }

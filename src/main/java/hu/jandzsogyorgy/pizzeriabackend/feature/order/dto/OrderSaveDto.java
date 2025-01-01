@@ -6,7 +6,6 @@ import java.util.List;
 
 public record OrderSaveDto(
         Long customerId,
-        String status,
 
         List<OrderItemSaveDto> orderItems
 ) {

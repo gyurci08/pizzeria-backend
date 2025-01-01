@@ -12,9 +12,10 @@ import org.mapstruct.Mapping;
 @Mapper(config = MappingConfig.class, uses = {OrderItemSaveMapper.class})
 public interface OrderSaveMapper extends EntityMapper<Order, OrderSaveDto> {
 
-    @Mapping(target="id", ignore = true)
-    @Mapping(target="orderDate", ignore = true)
-    @Mapping(target="totalAmount", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "orderDate", ignore = true)
+    @Mapping(target = "totalAmount", ignore = true)
+    @Mapping(target = "status", ignore = true)
     @Override
     Order toEntity(OrderSaveDto dto);
 
