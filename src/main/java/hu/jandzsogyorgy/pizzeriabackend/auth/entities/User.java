@@ -10,9 +10,9 @@ import java.util.List;
 public class User {
     @Id
     private Long id;
+    private String email;
     private String username;
     private String password;
-    private String email;
 
     @Transient
     private List<Role> roles;

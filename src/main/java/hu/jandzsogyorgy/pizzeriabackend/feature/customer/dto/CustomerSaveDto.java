@@ -1,7 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto;
 
-public record CustomerDto(
-        Long id,
+public record CustomerSaveDto(
         String name,
         String phone,
         String address

@@ -4,8 +4,25 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-
     <changeSet id="1" author="gyurci08">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="2" author="gyurci08">
         <createTable tableName="customer">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -13,15 +30,15 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false"/>
-            </column>
             <column name="phone" type="varchar(20)"/>
             <column name="address" type="varchar(255)"/>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_customer_user" references="user(id)"/>
+            </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="gyurci08">
+    <changeSet id="3" author="gyurci08">
         <createTable tableName="menu_item">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -39,7 +56,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="3" author="gyurci08">
+    <changeSet id="4" author="gyurci08">
         <createTable tableName="pizza_order">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -59,7 +76,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="4" author="gyurci08">
+    <changeSet id="5" author="gyurci08">
         <createTable tableName="order_item">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -76,24 +93,6 @@
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="5" author="gyurci08">
-        <createTable tableName="employee">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false"/>
-            </column>
-            <column name="phone" type="varchar(20)"/>
         </createTable>
     </changeSet>
 
@@ -144,23 +143,6 @@
 
 
     <changeSet id="9" author="gyurci08">
-        <createTable tableName="user">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="varchar(100)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="10" author="gyurci08">
         <createTable tableName="role">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -171,7 +153,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="11" author="gyurci08">
+    <changeSet id="10" author="gyurci08">
         <createTable tableName="user_role">
             <column name="user_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_user_role_user" references="user(id)"/>
@@ -184,20 +166,26 @@
     </changeSet>
 
 
-    <changeSet id="12" author="gyurci08">
-        <insert tableName="user">
+    <changeSet id="11" author="gyurci08">
+        <insert tableName="role">
             <column name="id" value="1"/>
-            <column name="username" value="gyurci08"/>
-            <!-- The password "12345678" hashed using BCrypt -->
-            <column name="password" value="$2y$10$tNtI03d4b1ZxIbY4xY6n/eqa2ouaI/qyP5q/LoRmZ0YUZzkO/80mm"/>
-            <column name="email" value="gyurci08@example.com"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="12" author="gyurci08">
+        <insert tableName="role">
+            <column name="id" value="2"/>
+            <column name="name" value="CUSTOMER"/>
         </insert>
     </changeSet>
 
     <changeSet id="13" author="gyurci08">
-        <insert tableName="role">
+        <insert tableName="user">
             <column name="id" value="1"/>
-            <column name="name" value="ADMIN"/>
+            <column name="username" value="gyurci08"/>
+            <column name="password" value="$2y$10$tNtI03d4b1ZxIbY4xY6n/eqa2ouaI/qyP5q/LoRmZ0YUZzkO/80mm"/>
+            <column name="email" value="gyurci08@example.com"/>
         </insert>
     </changeSet>
 
@@ -208,14 +196,10 @@
         </insert>
     </changeSet>
 
-
-    <!--    Sample order    -->
-
     <changeSet id="15" author="gyurci08">
         <insert tableName="customer">
             <column name="id" value="1"/>
             <column name="name" value="John Doe"/>
-            <column name="email" value="john.doe@example.com"/>
             <column name="phone" value="1234567890"/>
             <column name="address" value="123 Main St, Anytown, USA"/>
         </insert>
@@ -264,5 +248,6 @@
             <column name="price" value="12.99"/>
         </insert>
     </changeSet>
+
 
 </databaseChangeLog>

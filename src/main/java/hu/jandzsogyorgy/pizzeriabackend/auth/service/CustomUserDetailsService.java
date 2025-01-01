@@ -35,4 +35,13 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .collect(Collectors.toList())
         );
     }
+
+
+    public UserDetails registerUser(String email, String username, String password, String roleName) {
+        return createUserDetails(
+                userRoleService.registerUser(email, username, password, roleName)
+        );
+    }
+
+
 }

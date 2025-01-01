@@ -4,6 +4,9 @@ import hu.jandzsogyorgy.pizzeriabackend.auth.dto.*;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.TokenType;
+import hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto.CustomerDto;
+import hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto.CustomerSaveDto;
+import hu.jandzsogyorgy.pizzeriabackend.feature.customer.service.CustomerService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +15,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -21,6 +26,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
+
+    private final CustomerService customerService;
 
 
     public LoginResponseDto login(LoginRequestDto dto) {
@@ -77,6 +85,13 @@ public class AuthenticationService {
             log.error("Error during logout", e);
             return new LogoutResponseDto("Error during logout: " + e.getMessage());
         }
+    }
+
+    @Transactional
+    public RegisterResponseDto registerCustomer(RegisterRequestDto dto) {
+        UserDetails userDetails = userDetailsService.registerUser(dto.email(), dto.username(), passwordEncoder.encode(dto.password()), "CUSTOMER");
+        CustomerDto customerDto = customerService.createCustomer(new CustomerSaveDto(dto.name(), dto.phone(), dto.address()));
+        return new RegisterResponseDto(customerDto.name(), dto.email(), userDetails.getUsername(), customerDto.phone(), customerDto.address());
     }
 
 

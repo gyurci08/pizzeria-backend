@@ -19,3 +19,7 @@ Authorization: Bearer {{token}}
 ### Customer
 GET http://localhost:8888/api/customers
 Authorization: Bearer {{token}}
+
+### Customer
+GET http://localhost:8888/api/users
+Authorization: Bearer {{token}}
