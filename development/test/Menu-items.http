@@ -1,0 +1,6 @@
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc0NzAyMiwiaWF0IjoxNzM1NzM3MDIyfQ.k2u_U9RjcXPxJEr-UErN0t6JCB8tqJhdPO-zOzxujLI
+
+
+### Get
+GET http://localhost:8888/api/menu-items
+Authorization: Bearer {{token}}

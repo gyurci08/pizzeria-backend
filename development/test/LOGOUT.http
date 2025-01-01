@@ -1,8 +1,0 @@
-### POST request to the example server
-POST http://localhost:8888/api/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNDUyMjgzOCwiaWF0IjoxNzM0NTE5MjM4fQ.bqeE63P3hqbhuGLN_HTBeWrqqZ7UJDtATZGrBp2AYLg
-Content-Type: application/json
-
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNDUyMjgzOCwiaWF0IjoxNzM0NTE5MjM4fQ.bqeE63P3hqbhuGLN_HTBeWrqqZ7UJDtATZGrBp2AYLg"
-}

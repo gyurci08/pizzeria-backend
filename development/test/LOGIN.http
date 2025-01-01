@@ -1,8 +1,0 @@
-### POST request to the example server
-POST http://localhost:8888/api/auth/login
-Content-Type: application/json
-
-{
-  "username": "gyurci08",
-  "password": "12345678"
-}

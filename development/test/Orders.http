@@ -1,25 +1,36 @@
 @token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc0NzAyMiwiaWF0IjoxNzM1NzM3MDIyfQ.k2u_U9RjcXPxJEr-UErN0t6JCB8tqJhdPO-zOzxujLI
 
-### Orders
+### Get
 GET http://localhost:8888/api/orders
 Authorization: Bearer {{token}}
 
-### Orders with customer name
+### Get Orders with customer name
 GET http://localhost:8888/api/orders/with-customer-names
 Authorization: Bearer {{token}}
 
-### Orders with items
+### Get Orders with items
 GET http://localhost:8888/api/orders/with-items
 Authorization: Bearer {{token}}
 
-### Menu items
-GET http://localhost:8888/api/menu-items
+### Create
+POST http://localhost:8888/api/orders
+Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### Customer
-GET http://localhost:8888/api/customers
-Authorization: Bearer {{token}}
+{
+  "customerId": 1,
+  "orderItems": [
+    {
+      "menuItemId": 1,
+      "quantity": 2
+    },
+    {
+      "menuItemId": 2,
+      "quantity": 1
+    }
+  ]
+}
 
-### Customer
-GET http://localhost:8888/api/users
+### Delete
+DELETE http://localhost:8888/api/orders
 Authorization: Bearer {{token}}

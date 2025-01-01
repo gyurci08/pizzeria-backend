@@ -1,0 +1,29 @@
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc1NjI4NCwiaWF0IjoxNzM1NzQ2Mjg0fQ.HS9Tk7nM8bfF31RvU-RCvK2jqTlsIIRtRTUGbYoUwho
+@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTkyMzA1MCwiaWF0IjoxNzM1MzE4MjUwfQ.g7JxZJA1fkuW2Yu7guv6vWQHK0IKqVSxs5UeIKItVJI
+
+### Login
+POST http://localhost:8888/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "gyurci08",
+  "password": "12345678"
+}
+
+### Logout
+POST http://localhost:8888/api/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "token": "{{token}}"
+}
+
+### Refresh token
+POST http://localhost:8888/api/auth/refresh
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
