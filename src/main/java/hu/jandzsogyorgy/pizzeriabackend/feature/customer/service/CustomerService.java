@@ -43,4 +43,9 @@ public class CustomerService {
     }
 
 
+    public CustomerDto loadCustomerByUserId(Long id) {
+        return customerMapper.toDto(customerRepository.findByUserId(id));
+    }
+
+
 }

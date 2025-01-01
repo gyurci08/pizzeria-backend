@@ -1,0 +1,6 @@
+@apiUrl = http://localhost:8888/api
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc3Mjc4NSwiaWF0IjoxNzM1NzYyNzg1fQ.IeNM4jr2k7Z6S3C5e0pBrkDzReU5Hm8WLa2slwnWz8w
+
+### Get
+GET {{apiUrl}}/admin/roles
+Authorization: Bearer {{token}}

@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8888/api/orders
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0b21lciIsImV4cCI6MTczNTc1ODY5NCwiaWF0IjoxNzM1NzQ4Njk0fQ.UQO5AzFnsV7eaQGc4SAPWRCtJiN---Hsu1pEoUHssp0
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0b21lciIsImV4cCI6MTczNTc3MDUxMSwiaWF0IjoxNzM1NzYwNTExfQ.KBgt75IbKGfi5OmN5tk90aauPDHxbSXQTI9EeYOzgyk
 
 ### Get
 GET {{apiUrl}}
@@ -19,15 +19,15 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "customerId": 3,
+  "customerId": 2,
   "orderItems": [
     {
       "menuItemId": 1,
-      "quantity": 2
+      "quantity": 3
     },
     {
       "menuItemId": 2,
-      "quantity": 1
+      "quantity": 2
     }
   ]
 }

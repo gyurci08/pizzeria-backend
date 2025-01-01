@@ -3,6 +3,7 @@ package hu.jandzsogyorgy.pizzeriabackend.feature.order.service;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UnauthorizedException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.UserRoleService;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto.CustomerDto;
+import hu.jandzsogyorgy.pizzeriabackend.feature.customer.map.CustomerMapper;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.service.CustomerService;
 import hu.jandzsogyorgy.pizzeriabackend.feature.menuItem.entity.MenuItem;
 import hu.jandzsogyorgy.pizzeriabackend.feature.menuItem.map.MenuItemMapper;
@@ -48,6 +49,13 @@ public class OrderService {
 
     private final UserRoleService userRoleService;
     private final CustomerService customerService;
+
+    private final CustomerMapper customerMapper;
+
+
+    private Order findOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 
 
     private Map<Long, String> getCustomerIdToNameMap(List<Order> orders) {
@@ -134,6 +142,12 @@ public class OrderService {
         return orderMapper.toDtoWithItems(savedOrder, orderItemMapper.toEntity(items));
     }
 
+    @Transactional
+    public OrderDto changeOrderStatus(Order order, Status status) {
+        order.setStatus(status);
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+
 
     // Customer's authority
 
@@ -152,6 +166,15 @@ public class OrderService {
         throw new UnauthorizedException("You are not authorized");
     }
 
+    @Transactional
+    public void deleteMyOrder(String username, Long id) {
+        Order order = findOrderById(id);
+        CustomerDto customerDto = customerService.loadCustomerByUserId(userRoleService.getUserId(username));
+        
+        if (order.getCustomerId().equals(customerDto.id())) {
+            changeOrderStatus(order, Status.DELETED);
+        } else throw new UnauthorizedException("You are not authorized");
+    }
 
     // edit order
     // remove order

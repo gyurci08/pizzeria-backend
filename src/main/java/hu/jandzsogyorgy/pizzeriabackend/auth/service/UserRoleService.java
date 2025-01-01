@@ -3,6 +3,7 @@ package hu.jandzsogyorgy.pizzeriabackend.auth.service;
 import hu.jandzsogyorgy.pizzeriabackend.auth.entities.Role;
 import hu.jandzsogyorgy.pizzeriabackend.auth.entities.User;
 import hu.jandzsogyorgy.pizzeriabackend.auth.entities.UserRole;
+import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UserAlreadyExistsException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.repository.RoleRepository;
 import hu.jandzsogyorgy.pizzeriabackend.auth.repository.UserRepository;
 import hu.jandzsogyorgy.pizzeriabackend.auth.repository.UserRoleRepository;
@@ -26,6 +27,10 @@ public class UserRoleService {
 
     public Long getUserId(String username) {
         return userRepository.findByUsername(username).getId();
+    }
+
+    public List<Role> listRoles() {
+        return roleRepository.findAll();
     }
 
 
@@ -72,10 +77,10 @@ public class UserRoleService {
     }
 
     @Transactional
-    public User registerUser(String email, String username, String password, String roleName) {
+    public User register(String email, String username, String password, String roleName) {
         // Check if username or email already exists
         if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Username or email already exists");
+            throw new UserAlreadyExistsException("Username or email already exists");
         }
 
         // Create new user
@@ -94,13 +99,13 @@ public class UserRoleService {
             throw new RuntimeException("Role does not exists");
         }
 
+        // Set roles for the user object
+        user.setRoles(List.of(role));
+
         UserRole userRole = new UserRole();
         userRole.setUserId(user.getId());
         userRole.setRoleId(role.getId());
         userRoleRepository.save(userRole);
-
-        // Set roles for the user object
-        user.setRoles(List.of(role));
 
         return user;
     }

@@ -3,6 +3,7 @@ package hu.jandzsogyorgy.pizzeriabackend.exception;
 import hu.jandzsogyorgy.pizzeriabackend.auth.dto.ErrorResponseDto;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UnauthorizedException;
+import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,4 +27,12 @@ public class GlobalExceptionHandler {
     public ErrorResponseDto handleUnauthorizedException(UnauthorizedException ex) {
         return new ErrorResponseDto(ex.getMessage());
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return new ErrorResponseDto(ex.getMessage());
+    }
+
 }

@@ -4,6 +4,7 @@ public record CustomerDto(
         Long id,
         String name,
         String phone,
-        String address
+        String address,
+        Long userId
 ) {
 }

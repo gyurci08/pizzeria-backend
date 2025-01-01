@@ -23,6 +23,10 @@ public class AuthenticationController {
         return authenticationService.login(dto);
     }
 
+    @PostMapping("/register")
+    public RegisterResponseDto register(@RequestBody RegisterRequestDto dto) {
+        return authenticationService.register(dto);
+    }
 
 
     @PostMapping("/logout")

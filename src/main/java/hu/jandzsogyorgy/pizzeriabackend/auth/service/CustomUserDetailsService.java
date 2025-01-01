@@ -1,5 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.auth.service;
 
+import hu.jandzsogyorgy.pizzeriabackend.auth.dto.RegisterResponseDto;
 import hu.jandzsogyorgy.pizzeriabackend.auth.entities.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +38,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    public UserDetails registerUser(String email, String username, String password, String roleName) {
-        return createUserDetails(
-                userRoleService.registerUser(email, username, password, roleName)
-        );
+    public RegisterResponseDto registerUser(String email, String username, String password, String roleName) {
+        User user = userRoleService.register(email, username, password, roleName);
+        return new RegisterResponseDto(user.getId());
     }
 
 
