@@ -1,5 +1,7 @@
 package hu.jandzsogyorgy.pizzeriabackend.feature.order.service;
 
+import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UnauthorizedException;
+import hu.jandzsogyorgy.pizzeriabackend.auth.service.UserRoleService;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto.CustomerDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.service.CustomerService;
 import hu.jandzsogyorgy.pizzeriabackend.feature.menuItem.entity.MenuItem;
@@ -44,7 +46,9 @@ public class OrderService {
     private final MenuItemService menuItemService;
     private final MenuItemMapper menuItemMapper;
 
+    private final UserRoleService userRoleService;
     private final CustomerService customerService;
+
 
     private Map<Long, String> getCustomerIdToNameMap(List<Order> orders) {
         Set<Long> customerIds = orders.stream()
@@ -59,7 +63,6 @@ public class OrderService {
                         (existing, replacement) -> existing
                 ));
     }
-
 
     // list orders
     public List<OrderDto> listOrders() {
@@ -86,27 +89,24 @@ public class OrderService {
     }
 
 
-    // load order
-
     //new order
     @Transactional
     public OrderWithItemsDto createOrder(OrderSaveDto dto) {
         List<Long> itemIds = dto.orderItems().stream().map(OrderItemSaveDto::menuItemId).toList();
         List<MenuItem> foundItems = menuItemMapper.toEntity(menuItemService.listMenuItemsByIds(itemIds));
 
-        BigDecimal totalAmount = foundItems.stream()
-                .flatMap(                                                   // combines subtotal calculations into a single stream
-                        foundItem ->
-                                dto.orderItems()
-                                        .stream()
-                                        .filter(
-                                                itemDto -> itemDto.menuItemId().equals(foundItem.getId())
-                                        )
-                                        .map(
-                                                itemDto -> foundItem.getPrice().multiply(BigDecimal.valueOf(itemDto.quantity()))
-                                        )
-                )
-                .reduce(BigDecimal.ZERO, BigDecimal::add); // summing them up, starting with BigDecimal.ZERO as the initial value
+
+        BigDecimal totalAmount = dto.orderItems().stream()
+                .map(
+                        item ->
+                        {
+                            MenuItem menuItem = foundItems.stream()
+                                    .filter(mi -> mi.getId().equals(item.menuItemId()))
+                                    .findFirst()
+                                    .orElseThrow(() -> new RuntimeException("Menu item not found"));
+                            return menuItem.getPrice().multiply(BigDecimal.valueOf(item.quantity()));
+                        })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Order order = orderSaveMapper.toEntity(dto);
         order.setOrderDate(LocalDateTime.now());
@@ -116,10 +116,40 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
 
         List<OrderItemDto> items = dto.orderItems().stream()
-                .map(itemDto -> orderItemService.createOrderItem(itemDto, savedOrder.getId()))
+                .map(itemSaveDto -> {
+                    MenuItem menuItem = foundItems.stream()
+                            .filter(item -> item.getId().equals(itemSaveDto.menuItemId()))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("Menu item not found"));
+
+                    BigDecimal price = menuItem.getPrice().multiply(
+                            BigDecimal.valueOf(itemSaveDto.quantity())
+                    );
+
+                    return orderItemService.createOrderItem(itemSaveDto, savedOrder.getId(), price);
+                })
                 .toList();
 
+
         return orderMapper.toDtoWithItems(savedOrder, orderItemMapper.toEntity(items));
+    }
+
+
+    // Customer's authority
+
+
+    public List<OrderDto> listMyOrders(String username) {
+        return orderMapper.toDto(
+                orderRepository.findAllByCustomerId(userRoleService.getUserId(username))
+        );
+    }
+
+    @Transactional
+    public OrderWithItemsDto createMyOrder(String username, OrderSaveDto dto) {
+        if (dto.customerId().equals(userRoleService.getUserId(username))) {
+            return createOrder(dto);
+        }
+        throw new UnauthorizedException("You are not authorized");
     }
 
 

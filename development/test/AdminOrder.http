@@ -1,19 +1,20 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc0NzAyMiwiaWF0IjoxNzM1NzM3MDIyfQ.k2u_U9RjcXPxJEr-UErN0t6JCB8tqJhdPO-zOzxujLI
+@apiUrl = http://localhost:8888/api/admin/orders
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc1NzI1MywiaWF0IjoxNzM1NzQ3MjUzfQ.44v2dAPl81x4iRdy1efoxgw6InRn_uKa1bKQ_1iNu4A
 
 ### Get
-GET http://localhost:8888/api/orders
+GET {{apiUrl}}
 Authorization: Bearer {{token}}
 
 ### Get Orders with customer name
-GET http://localhost:8888/api/orders/with-customer-names
+GET {{apiUrl}}/with-customer-names
 Authorization: Bearer {{token}}
 
 ### Get Orders with items
-GET http://localhost:8888/api/orders/with-items
+GET {{apiUrl}}/with-items
 Authorization: Bearer {{token}}
 
 ### Create
-POST http://localhost:8888/api/orders
+POST {{apiUrl}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -32,5 +33,5 @@ Authorization: Bearer {{token}}
 }
 
 ### Delete
-DELETE http://localhost:8888/api/orders
+DELETE {{apiUrl}}
 Authorization: Bearer {{token}}

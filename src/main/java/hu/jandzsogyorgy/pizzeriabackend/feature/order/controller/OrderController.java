@@ -1,12 +1,13 @@
 package hu.jandzsogyorgy.pizzeriabackend.feature.order.controller;
 
-import hu.jandzsogyorgy.pizzeriabackend.feature.order.dto.OrderSaveDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.dto.OrderDto;
+import hu.jandzsogyorgy.pizzeriabackend.feature.order.dto.OrderSaveDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.dto.OrderWithItemsDto;
-import hu.jandzsogyorgy.pizzeriabackend.feature.order.dto.OrderWithNameDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,26 +19,19 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    //@PreAuthorize("hasRole('ADMIN')")  // Method level authentication
     @GetMapping
-    public List<OrderDto> listOrders() {
-        return orderService.listOrders();
+    public List<OrderDto> listOrders(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return orderService.listMyOrders(userDetails.getUsername());
     }
-
-    @GetMapping("/with-customer-names")
-    public List<OrderWithNameDto> listOrdersWithCustomerNames() {
-        return orderService.listOrdersWithName();
-    }
-
-    @GetMapping("/with-items")
-    public List<OrderWithItemsDto> listOrdersWithItems() {
-        return orderService.listOrdersWithItems();
-    }
-
 
     @PostMapping
-    public OrderWithItemsDto createOrder(@RequestBody OrderSaveDto dto) {
-        return orderService.createOrder(dto);
+    public OrderWithItemsDto createOrder(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody OrderSaveDto dto
+    ) {
+        return orderService.createMyOrder(userDetails.getUsername(), dto);
     }
 
 

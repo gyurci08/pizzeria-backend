@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -25,9 +26,10 @@ public class OrderItemService {
         return orderItemMapper.toDto(orderItemRepository.findAll());
     }
 
-    public OrderItemDto createOrderItem(OrderItemSaveDto dto, Long orderId) {
+    public OrderItemDto createOrderItem(OrderItemSaveDto dto, Long orderId, BigDecimal price) {
         OrderItem orderItem = orderItemSaveMapper.toEntity(dto);
         orderItem.setOrderId(orderId);
+        orderItem.setPrice(price);
 
         return orderItemMapper.toDto(
                 orderItemRepository.save(orderItem)

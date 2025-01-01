@@ -1,0 +1,37 @@
+@apiUrl = http://localhost:8888/api/orders
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0b21lciIsImV4cCI6MTczNTc1ODY5NCwiaWF0IjoxNzM1NzQ4Njk0fQ.UQO5AzFnsV7eaQGc4SAPWRCtJiN---Hsu1pEoUHssp0
+
+### Get
+GET {{apiUrl}}
+Authorization: Bearer {{token}}
+
+### Get Orders with customer name
+GET {{apiUrl}}/with-customer-names
+Authorization: Bearer {{token}}
+
+### Get Orders with items
+GET {{apiUrl}}/with-items
+Authorization: Bearer {{token}}
+
+### Create
+POST {{apiUrl}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "customerId": 3,
+  "orderItems": [
+    {
+      "menuItemId": 1,
+      "quantity": 2
+    },
+    {
+      "menuItemId": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+### Delete
+DELETE {{apiUrl}}
+Authorization: Bearer {{token}}

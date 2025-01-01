@@ -24,6 +24,11 @@ public class UserRoleService {
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
 
+    public Long getUserId(String username) {
+        return userRepository.findByUsername(username).getId();
+    }
+
+
     public List<User> listUsers() {
         Map<Long, Role> roleMap = roleRepository.findAll().stream()
                 .collect(
