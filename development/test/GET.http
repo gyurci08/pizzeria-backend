@@ -18,4 +18,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczN
 
 ### GET request to example server
 GET http://localhost:8888/api/menu-items
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTY1OTg0NCwiaWF0IjoxNzM1NjQ5ODQ0fQ.WdtJ39iATQLUldgxc5dmq5aiCILbWRT6u8GM3at6KII
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTczNDkxNCwiaWF0IjoxNzM1NzI0OTE0fQ.r1CNY1M0VrQoDEiiDJRTlTqYQ45XBAdmCPWMr1tXPQY
+
+
+### GET request to example server
+GET http://localhost:8888/api/customers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTczNDkxNCwiaWF0IjoxNzM1NzI0OTE0fQ.r1CNY1M0VrQoDEiiDJRTlTqYQ45XBAdmCPWMr1tXPQY
