@@ -1,26 +1,21 @@
-### GET request to example server
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc0NzAyMiwiaWF0IjoxNzM1NzM3MDIyfQ.k2u_U9RjcXPxJEr-UErN0t6JCB8tqJhdPO-zOzxujLI
+
+### Orders
 GET http://localhost:8888/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTYwMDUyNiwiaWF0IjoxNzM1NTkwNTI2fQ.kx6-qGTTI3Z4jLLem80Rc010Zhz-rOwN6jMQJW-B9pY
+Authorization: Bearer {{token}}
 
-#{
-#  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTU3NTg0NiwiaWF0IjoxNzM1NTcyMjQ2fQ.3hJDpOPJo-lFmQSbPMo8oV9eMn8JrtnBDSPyWOaak5g",
-#  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTkyMzA1MCwiaWF0IjoxNzM1MzE4MjUwfQ.g7JxZJA1fkuW2Yu7guv6vWQHK0IKqVSxs5UeIKItVJI"
-#}
-
-### GET request to example server
+### Orders with customer name
 GET http://localhost:8888/api/orders/with-customer-names
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTYwMDUyNiwiaWF0IjoxNzM1NTkwNTI2fQ.kx6-qGTTI3Z4jLLem80Rc010Zhz-rOwN6jMQJW-B9pY
+Authorization: Bearer {{token}}
 
-### GET request to example server
+### Orders with items
 GET http://localhost:8888/api/orders/with-items
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTYwMDUyNiwiaWF0IjoxNzM1NTkwNTI2fQ.kx6-qGTTI3Z4jLLem80Rc010Zhz-rOwN6jMQJW-B9pY
+Authorization: Bearer {{token}}
 
-
-### GET request to example server
+### Menu items
 GET http://localhost:8888/api/menu-items
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTczNDkxNCwiaWF0IjoxNzM1NzI0OTE0fQ.r1CNY1M0VrQoDEiiDJRTlTqYQ45XBAdmCPWMr1tXPQY
+Authorization: Bearer {{token}}
 
-
-### GET request to example server
+### Customer
 GET http://localhost:8888/api/customers
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTczNDkxNCwiaWF0IjoxNzM1NzI0OTE0fQ.r1CNY1M0VrQoDEiiDJRTlTqYQ45XBAdmCPWMr1tXPQY
+Authorization: Bearer {{token}}
