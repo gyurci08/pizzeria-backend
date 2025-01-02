@@ -23,6 +23,7 @@ import hu.jandzsogyorgy.pizzeriabackend.feature.orderItem.map.OrderItemMapper;
 import hu.jandzsogyorgy.pizzeriabackend.feature.orderItem.service.OrderItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -167,10 +168,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void deleteMyOrder(String username, Long id) {
+    public void deleteMyOrder(UserDetails userDetails, Long id) {
         Order order = findOrderById(id);
-        CustomerDto customerDto = customerService.loadCustomerByUserId(userRoleService.getUserId(username));
-        
+        CustomerDto customerDto = customerService.loadMyCustomer(userDetails);
+
         if (order.getCustomerId().equals(customerDto.id())) {
             changeOrderStatus(order, Status.DELETED);
         } else throw new UnauthorizedException("You are not authorized");

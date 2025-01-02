@@ -1,6 +1,6 @@
-@apiUrl = http://localhost:8888/api
+@apiUrl = http://localhost:8888/api/admin/customers
 @token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTgxNDQxMiwiaWF0IjoxNzM1ODA0NDEyfQ.8MO_BP0xS6qvRxMEq7TYG_uOeMLplp97wnqLyRtdJTc
 
 ### Get
-GET {{apiUrl}}/admin/users
+GET {{apiUrl}}
 Authorization: Bearer {{token}}

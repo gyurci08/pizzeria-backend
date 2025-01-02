@@ -1,5 +1,19 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTc0NzAyMiwiaWF0IjoxNzM1NzM3MDIyfQ.k2u_U9RjcXPxJEr-UErN0t6JCB8tqJhdPO-zOzxujLI
+@apiUrl = http://localhost:8888/api/customers
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImV4cCI6MTczNTgxNDM4OSwiaWF0IjoxNzM1ODA0Mzg5fQ.W_xg0S1-fcPYZ7nr8iPvPIAWooYNl16U2lo8lqHZkM0
 
-### Get
-GET http://localhost:8888/api/customers
+
+### MyCustomer
+GET {{apiUrl}}
 Authorization: Bearer {{token}}
+
+
+### CreateMyCustomer
+POST {{apiUrl}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Test User",
+  "phone": "1234567890",
+  "address": "Hungary, Nowhere, Test Street 2"
+}
