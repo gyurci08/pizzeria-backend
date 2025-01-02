@@ -168,8 +168,8 @@ public class OrderService {
     }
 
     @Transactional
-    public void deleteMyOrder(UserDetails userDetails, Long id) {
-        Order order = findOrderById(id);
+    public void deleteMyOrder(UserDetails userDetails, Long orderId) {
+        Order order = findOrderById(orderId);
         CustomerDto customerDto = customerService.loadMyCustomer(userDetails);
 
         if (order.getCustomerId().equals(customerDto.id())) {

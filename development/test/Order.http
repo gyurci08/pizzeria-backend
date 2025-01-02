@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8888/api/orders
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjdXN0b21lciIsImV4cCI6MTczNTc3MDUxMSwiaWF0IjoxNzM1NzYwNTExfQ.KBgt75IbKGfi5OmN5tk90aauPDHxbSXQTI9EeYOzgyk
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImV4cCI6MTczNTgyNDI4NSwiaWF0IjoxNzM1ODE0Mjg1fQ.73fXeA65SSnjHpn9X5QLwWX583PE0MYP6-HwVB_aqtg
 
 ### Get
 GET {{apiUrl}}
@@ -19,7 +19,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "customerId": 2,
+  "customerId": 3,
   "orderItems": [
     {
       "menuItemId": 1,
@@ -33,5 +33,5 @@ Authorization: Bearer {{token}}
 }
 
 ### Delete
-DELETE {{apiUrl}}
+DELETE {{apiUrl}}/4
 Authorization: Bearer {{token}}

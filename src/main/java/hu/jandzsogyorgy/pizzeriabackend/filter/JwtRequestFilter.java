@@ -27,7 +27,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
 
-    // TODO: Check if exceptions can be handled in the util
+    // TODO: Check if exceptions can be handled in the GlobalException handler
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -41,19 +41,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             token = authorizationHeader.substring(7);
             try {
                 username = jwtUtil.extractUsername(TokenType.ACCESS, token);
-            }
-            catch (ExpiredJwtException e) {
+            } catch (ExpiredJwtException e) {
                 if (requestPath.equals("/api/auth/refresh")) {
                     logger.info("Attempting token renewal");
                     username = e.getClaims().getSubject();
-                }
-                else{
+                } else {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getWriter().write("Access token has expired");
                     return;
                 }
-            }
-            catch (SignatureException e) {
+            } catch (SignatureException e) {
                 logger.error("Invalid signature");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Access token is invalid");
@@ -83,16 +80,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("User not found");
                 return;
+
             }
         }
 
 
-
-
         chain.doFilter(request, response);
     }
-
-
 
 
 }

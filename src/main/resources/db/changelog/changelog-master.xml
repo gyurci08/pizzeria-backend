@@ -228,7 +228,7 @@
         <insert tableName="pizza_order">
             <column name="id" value="1"/>
             <column name="customer_id" value="1"/>
-            <column name="order_date" value="2024-12-23 14:30"/>
+            <column name="order_date" value="2025-01-01T07:23:32.224872"/>
             <column name="total_amount" value="23.98"/>
             <column name="status" value="PLACED"/>
         </insert>

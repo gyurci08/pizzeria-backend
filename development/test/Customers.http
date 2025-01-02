@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8888/api/customers
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImV4cCI6MTczNTgxNDM4OSwiaWF0IjoxNzM1ODA0Mzg5fQ.W_xg0S1-fcPYZ7nr8iPvPIAWooYNl16U2lo8lqHZkM0
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImV4cCI6MTczNTgyNDI4NSwiaWF0IjoxNzM1ODE0Mjg1fQ.73fXeA65SSnjHpn9X5QLwWX583PE0MYP6-HwVB_aqtg
 
 
 ### MyCustomer
