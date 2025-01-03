@@ -255,9 +255,9 @@
     <changeSet id="19" author="gyurci08">
         <insert tableName="user">
             <column name="id" value="2"/>
-            <column name="username" value="customer"/>
+            <column name="username" value="test"/>
             <column name="password" value="$2y$10$tNtI03d4b1ZxIbY4xY6n/eqa2ouaI/qyP5q/LoRmZ0YUZzkO/80mm"/>
-            <column name="email" value="customer@example.com"/>
+            <column name="email" value="test@example.com"/>
         </insert>
     </changeSet>
 
@@ -274,6 +274,7 @@
             <column name="name" value="Test Customer"/>
             <column name="phone" value="1234567890"/>
             <column name="address" value="Hungary, Sehol, Kiskegyed utca 23"/>
+            <column name="user_id" value="2"/>
         </insert>
     </changeSet>
 
