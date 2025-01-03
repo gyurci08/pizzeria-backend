@@ -17,19 +17,11 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtUtil {
     private final JwtConfig jwtConfig;
-    private Map<TokenType, String> secretMap;
-
 
     private final Set<String> blacklistedTokens = Collections.synchronizedSet(new HashSet<>());
 
     private String getSecret(TokenType tokenType) {
-        if (secretMap==null){
-            secretMap = Map.of(
-                    TokenType.ACCESS, jwtConfig.getTokenSecret(),
-                    TokenType.REFRESH, jwtConfig.getRefreshSecret()
-            );
-        }
-        return secretMap.get(tokenType);
+        return tokenType == TokenType.ACCESS ? jwtConfig.getTokenSecret() : jwtConfig.getRefreshSecret();
     }
 
     @Scheduled(fixedRate = 3600000) // Run every hour

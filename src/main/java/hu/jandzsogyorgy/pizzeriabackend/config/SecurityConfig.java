@@ -27,12 +27,11 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final CorsConfig corsConfig;
 
-    // TODO: /api/auth/logout while authenticated
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
