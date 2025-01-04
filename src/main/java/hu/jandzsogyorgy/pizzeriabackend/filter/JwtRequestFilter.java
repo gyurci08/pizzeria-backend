@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,20 +20,33 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
+    private final List<String> allowedPaths = List.of(
+            "/api/menu-items"
+    );
 
-    // TODO: Check if exceptions can be handled in the GlobalException handler
+
+    // TODO: Exceptions should be handled in the GlobalException handler
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String requestPath = request.getServletPath();
         final String authorizationHeader = request.getHeader("Authorization");
+
+
+        if (allowedPaths.contains(requestPath)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
 
         String username = null;
         String token = null;
@@ -43,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtUtil.extractUsername(TokenType.ACCESS, token);
             } catch (ExpiredJwtException e) {
                 if (requestPath.equals("/api/auth/refresh")) {
-                    logger.info("Attempting token renewal");
+                    log.info("Attempting token renewal");
                     username = e.getClaims().getSubject();
                 } else {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -51,7 +65,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     return;
                 }
             } catch (SignatureException e) {
-                logger.error("Invalid signature");
+                log.error("Invalid signature");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Access token is invalid");
                 return;
@@ -70,13 +84,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
-                    logger.error("Invalid token for user: " + username);
+                    log.error("Invalid token for user: " + username);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getWriter().write("Invalid token");
                     return;
                 }
             } catch (UsernameNotFoundException e) {
-                logger.error("User not found: " + username);
+                log.error("User not found: " + username);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("User not found");
                 return;

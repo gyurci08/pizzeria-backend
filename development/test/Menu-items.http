@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MiIsImV4cCI6MTczNTgyNDI4NSwiaWF0IjoxNzM1ODE0Mjg1fQ.73fXeA65SSnjHpn9X5QLwWX583PE0MYP6-HwVB_aqtg
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNjAxNTY4OSwiaWF0IjoxNzM2MDA1Njg5fQ.gzLrP6uP9EEE1o8ylx9dJdo3QfhRBHM4XoofCaL--VU
 
 ### Get
 GET http://localhost:8888/api/menu-items

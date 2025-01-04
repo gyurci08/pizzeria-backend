@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,17 +26,19 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final CorsConfig corsConfig;
 
+    // TODO: Use method level security for more flexibility (order is: req -> security config -> method)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/orders/**").hasAnyRole("ADMIN", "CUSTOMER")
-                        .requestMatchers("/api/menu-items/**").hasAnyRole("ADMIN", "CUSTOMER")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/orders/**").hasAnyRole("ADMIN", "CUSTOMER")
+//                        .requestMatchers("/api/menu-items/**").hasAnyRole("ADMIN", "CUSTOMER")
+                                .requestMatchers("/api/menu-items").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
