@@ -1,5 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.config;
 
+import hu.jandzsogyorgy.pizzeriabackend.exception.FilterChainExceptionHandler;
 import hu.jandzsogyorgy.pizzeriabackend.filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,13 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+//@EnableMethodSecurity // Not needed as I created seperated and readable function
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
     private final JwtRequestFilter jwtRequestFilter;
     private final CorsConfig corsConfig;
 
@@ -58,8 +60,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(this::configureRequests)
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                    log.info("Setting session management policy to STATELESS");
                 })
+                .addFilterBefore(filterChainExceptionHandler, WebAsyncManagerIntegrationFilter.class)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

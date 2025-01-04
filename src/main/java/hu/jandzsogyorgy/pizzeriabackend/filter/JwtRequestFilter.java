@@ -1,5 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.filter;
 
+import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.CustomUserDetailsService;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.JwtUtil;
 import hu.jandzsogyorgy.pizzeriabackend.auth.util.TokenType;
@@ -14,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,79 +28,68 @@ import java.util.List;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final List<String> allowedPaths = List.of("/api/menu-items");
 
-    private final List<String> allowedPaths = List.of(
-            "/api/menu-items"
-    );
-
-
-    // TODO: Exceptions should be handled in the GlobalException handler
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-        final String requestPath = request.getServletPath();
-        final String authorizationHeader = request.getHeader("Authorization");
-
-
-        if (allowedPaths.contains(requestPath)) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        if (allowedPaths.contains(request.getServletPath())) {
             chain.doFilter(request, response);
             return;
         }
 
-
-        String username = null;
-        String token = null;
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-            try {
-                username = jwtUtil.extractUsername(TokenType.ACCESS, token);
-            } catch (ExpiredJwtException e) {
-                if (requestPath.equals("/api/auth/refresh")) {
-                    log.info("Attempting token renewal");
-                    username = e.getClaims().getSubject();
-                } else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().write("Access token has expired");
-                    return;
-                }
-            } catch (SignatureException e) {
-                log.error("Invalid signature");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Access token is invalid");
-                return;
-            }
+        String token = extractToken(request);
+        if (token != null) {
+            processToken(token, request);
         }
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            try {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                boolean isTokenValid = requestPath.equals("/api/auth/refresh") ||
-                        jwtUtil.validateToken(userDetails, TokenType.ACCESS, token);
-
-                if (isTokenValid) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                } else {
-                    log.error("Invalid token for user: " + username);
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().write("Invalid token");
-                    return;
-                }
-            } catch (UsernameNotFoundException e) {
-                log.error("User not found: " + username);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("User not found");
-                return;
-
-            }
-        }
-
 
         chain.doFilter(request, response);
     }
 
+    private String extractToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
+    }
 
+    private void processToken(String token, HttpServletRequest request) {
+        try {
+            String username = jwtUtil.extractUsername(TokenType.ACCESS, token);
+            authenticateUser(username, token, request);
+        } catch (ExpiredJwtException e) {
+            handleExpiredToken(request, e);
+        } catch (SignatureException e) {
+            throw new AuthenticationException("Invalid token signature");
+        }
+    }
+
+    private void authenticateUser(String username, String token, HttpServletRequest request) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            validateAndSetAuthentication(userDetails, token, request);
+        }
+    }
+
+    private void validateAndSetAuthentication(UserDetails userDetails, String token, HttpServletRequest request) {
+        if (jwtUtil.validateToken(userDetails, TokenType.ACCESS, token)) {
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        } else {
+            throw new AuthenticationException("Invalid token");
+        }
+    }
+
+    private void handleExpiredToken(HttpServletRequest request, ExpiredJwtException e) {
+        if (request.getServletPath().equals("/api/auth/refresh")) {
+            log.info("Attempting token renewal");
+        } else {
+            throw new AuthenticationException("Access token has expired");
+        }
+    }
 }
+
+
+

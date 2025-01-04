@@ -1,16 +1,8 @@
 @apiUrl = http://localhost:8888/api/orders
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MDI4NjExLCJpYXQiOjE3MzYwMTg2MTF9.HEXzcbifm6BW9JEectpNjyLtej12ttOtNGvI6WJ2jAs
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MDI4OTU2LCJpYXQiOjE3MzYwMTg5NTZ9.tnbHMr6ts56fzmvaIwmcPs7lU4cw9e7w85DHG17PKEY
 
 ### Get
 GET {{apiUrl}}
-Authorization: Bearer {{token}}
-
-### Get Orders with customer name
-GET {{apiUrl}}/with-customer-names
-Authorization: Bearer {{token}}
-
-### Get Orders with items
-GET {{apiUrl}}/with-items
 Authorization: Bearer {{token}}
 
 ### Create
