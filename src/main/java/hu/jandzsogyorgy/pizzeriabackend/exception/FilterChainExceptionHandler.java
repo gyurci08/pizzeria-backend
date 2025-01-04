@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE) // It ensures the exception handler runs first in the filter chain
+@Order(Ordered.HIGHEST_PRECEDENCE) // Ensure that the handler runs first in the chain
 @RequiredArgsConstructor
 public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
