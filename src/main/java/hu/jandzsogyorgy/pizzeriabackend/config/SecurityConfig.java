@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,20 +28,35 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final CorsConfig corsConfig;
 
-    // TODO: Use method level security for more flexibility (order is: req -> security config -> method)
+
+    private void configureRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
+        auth
+                // Auth
+                .requestMatchers("/api/auth/**").permitAll()
+
+                // Admin
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // Orders
+                .requestMatchers("/api/orders/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                // Menu-items
+                .requestMatchers(HttpMethod.GET, "/api/menu-items/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/menu-items/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/menu-items/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/menu-items/**").hasRole("ADMIN")
+
+                // Others
+                .anyRequest().authenticated();
+    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/orders/**").hasAnyRole("ADMIN", "CUSTOMER")
-//                        .requestMatchers("/api/menu-items/**").hasAnyRole("ADMIN", "CUSTOMER")
-                                .requestMatchers("/api/menu-items").permitAll()
-                                .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(this::configureRequests)
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                     log.info("Setting session management policy to STATELESS");
