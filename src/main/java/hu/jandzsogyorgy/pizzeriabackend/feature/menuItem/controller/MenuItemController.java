@@ -20,6 +20,7 @@ import java.util.List;
 public class MenuItemController {
     private final MenuItemService menuItemService;
 
+    // TODO: Separate featured items controller
     @PreAuthorize("permitAll()")
     @GetMapping
     public List<MenuItemDto> listMenuItems() {
