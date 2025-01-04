@@ -33,6 +33,7 @@ public class SecurityConfig {
         auth
                 // Auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/auth/logout").authenticated()
 
                 // Admin
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
@@ -42,9 +43,7 @@ public class SecurityConfig {
 
                 // Menu-items
                 .requestMatchers(HttpMethod.GET, "/api/menu-items/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/menu-items/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/menu-items/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/menu-items/**").hasRole("ADMIN")
+                .requestMatchers("/api/menu-items/**").hasRole("ADMIN")
 
                 // Others
                 .anyRequest().authenticated();
