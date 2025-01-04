@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8888/api/orders
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MDI4OTU2LCJpYXQiOjE3MzYwMTg5NTZ9.tnbHMr6ts56fzmvaIwmcPs7lU4cw9e7w85DHG17PKEY
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MDI4OTU2LCJpYXQiOjE3MzYwMTg5NTZ9.tnbHMr6ts56fzmvaIwmcPs7lU4cw9e7w85DHG17PKEYs
 
 ### Get
 GET {{apiUrl}}

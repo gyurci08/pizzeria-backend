@@ -25,11 +25,12 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            handleException(response, e);
+            handleGenericException(response, e);
         }
     }
 
-    private void handleException(HttpServletResponse response, Exception e) throws IOException {
+
+    private void handleGenericException(HttpServletResponse response, Exception e) throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
