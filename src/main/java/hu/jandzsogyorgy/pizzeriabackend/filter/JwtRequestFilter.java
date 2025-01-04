@@ -84,7 +84,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private void handleExpiredToken(HttpServletRequest request, ExpiredJwtException e) {
         if (request.getServletPath().equals("/api/auth/refresh")) {
-            log.info("Attempting token renewal");
         } else {
             throw new AuthenticationException("Access token has expired");
         }
