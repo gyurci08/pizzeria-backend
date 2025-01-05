@@ -4,6 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <!--  Table declarations  -->
+
     <changeSet id="1" author="gyurci08">
         <createTable tableName="user">
             <column name="id" type="bigint" autoIncrement="true">
@@ -115,18 +117,17 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(100)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="description" type="varchar(255)"/>
-            <column name="price" type="decimal(10,2)">
-                <constraints nullable="false"/>
+            <column name="menu_item_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_pizza_menu_item" references="menu_item(id)"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="8" author="gyurci08">
         <createTable tableName="pizza_ingredient">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="pizza_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_pizza_ingredient_pizza" references="pizza(id)"/>
             </column>
@@ -138,7 +139,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey tableName="pizza_ingredient" columnNames="pizza_id, ingredient_id"/>
     </changeSet>
 
 
@@ -166,6 +166,9 @@
             </column>
         </createTable>
     </changeSet>
+
+
+    <!--  Inserts  -->
 
 
     <changeSet id="11" author="gyurci08">

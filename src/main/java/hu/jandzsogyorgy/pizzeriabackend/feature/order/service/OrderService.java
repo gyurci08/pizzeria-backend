@@ -1,6 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.feature.order.service;
 
-import hu.jandzsogyorgy.pizzeriabackend.auth.exception.UnauthorizedException;
+import hu.jandzsogyorgy.pizzeriabackend.auth.exception.AuthenticationException;
 import hu.jandzsogyorgy.pizzeriabackend.auth.service.UserRoleService;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.dto.CustomerDto;
 import hu.jandzsogyorgy.pizzeriabackend.feature.customer.map.CustomerMapper;
@@ -164,7 +164,7 @@ public class OrderService {
         if (dto.customerId().equals(userRoleService.getUserId(username))) {
             return createOrder(dto);
         }
-        throw new UnauthorizedException("You are not authorized");
+        throw new AuthenticationException("You are not authorized");
     }
 
     @Transactional
@@ -174,7 +174,7 @@ public class OrderService {
 
         if (order.getCustomerId().equals(customerDto.id())) {
             changeOrderStatus(order, Status.DELETED);
-        } else throw new UnauthorizedException("You are not authorized");
+        } else throw new AuthenticationException("You are not authorized");
     }
 
     // edit order
