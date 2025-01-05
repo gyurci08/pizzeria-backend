@@ -1,6 +1,6 @@
 package hu.jandzsogyorgy.pizzeriabackend.config;
 
-import hu.jandzsogyorgy.pizzeriabackend.exception.FilterChainExceptionHandler;
+import hu.jandzsogyorgy.pizzeriabackend.exception.FilterExceptionHandler;
 import hu.jandzsogyorgy.pizzeriabackend.filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import org.springframework.security.web.context.request.async.WebAsyncManagerInt
 //@EnableMethodSecurity // Not needed as I created seperated and readable function
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final FilterChainExceptionHandler filterChainExceptionHandler;
+    private final FilterExceptionHandler filterExceptionHandler;
     private final JwtRequestFilter jwtRequestFilter;
     private final CorsConfig corsConfig;
 
@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .addFilterBefore(filterChainExceptionHandler, WebAsyncManagerIntegrationFilter.class)
+                .addFilterBefore(filterExceptionHandler, WebAsyncManagerIntegrationFilter.class)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

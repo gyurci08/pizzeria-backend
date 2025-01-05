@@ -14,10 +14,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// Filter chain is before controller layer
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE) // Ensure that the handler runs first in the chain
 @RequiredArgsConstructor
-public class FilterChainExceptionHandler extends OncePerRequestFilter {
+public class FilterExceptionHandler extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     @Override
@@ -29,16 +30,18 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
         }
     }
 
-
+    // TODO: Refactor ErrorResponseDto, then use it
     private void handleGenericException(HttpServletResponse response, Exception e) throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        errorDetails.put("code", HttpServletResponse.SC_UNAUTHORIZED);
         errorDetails.put("error", "Unauthorized");
         errorDetails.put("message", e.getMessage());
 
         objectMapper.writeValue(response.getOutputStream(), errorDetails);
     }
 }
+
+
