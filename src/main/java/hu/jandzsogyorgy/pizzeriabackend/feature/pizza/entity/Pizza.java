@@ -7,7 +7,5 @@ import org.springframework.data.annotation.Id;
 public class Pizza {
     @Id
     private Long id;
-    private String name;
-    private String description;
-    private Float price;
+    private Long menuItemId;
 }
