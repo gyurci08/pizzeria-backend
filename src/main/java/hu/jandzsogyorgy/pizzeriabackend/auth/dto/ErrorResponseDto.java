@@ -6,3 +6,4 @@ public record ErrorResponseDto(
         String message
 ) {
 }
+

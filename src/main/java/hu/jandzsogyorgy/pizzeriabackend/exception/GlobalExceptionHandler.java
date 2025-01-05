@@ -33,5 +33,5 @@ public class GlobalExceptionHandler {
     public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return createErrorResponse(HttpStatus.CONFLICT, ex);
     }
-
 }
+

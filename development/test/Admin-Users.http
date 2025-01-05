@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8888/api
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNTgxNDQxMiwiaWF0IjoxNzM1ODA0NDEyfQ.8MO_BP0xS6qvRxMEq7TYG_uOeMLplp97wnqLyRtdJTc
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNjEwMjM0NSwiaWF0IjoxNzM2MDkyMzQ1fQ.pN69hB1ghnndsJ_HGzhgZcKcI0RW-11AYo5UqGFwtDI
 
 ### Get
 GET {{apiUrl}}/admin/users

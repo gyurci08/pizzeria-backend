@@ -1,13 +1,13 @@
 @apiUrl = http://localhost:8888/api/auth
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MDI4NjExLCJpYXQiOjE3MzYwMTg2MTF9.HEXzcbifm6BW9JEectpNjyLtej12ttOtNGvI6WJ2jAs
-@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJneXVyY2kwOCIsImV4cCI6MTczNjM2ODAyMSwiaWF0IjoxNzM1NzYzMjIxfQ.-lYAfrTUTURZOtYLj1I_MtE4JXhsVeExd6kCxbm_3jc
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2MTAwNzU5LCJpYXQiOjE3MzYwOTA3NTl9.RQzbAWDjgaAcUvZUb_nO_HTigJcZchypYAv7drcEoIUs
+@refreshToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM2Njk1NTU5LCJpYXQiOjE3MzYwOTA3NTl9.9yr0v1ZZCxtjYdX4_q9KYQpen52-DS15LYpoCRKMd2Us
 
 ### Login
 POST {{apiUrl}}/login
 Content-Type: application/json
 
 {
-  "username": "test",
+  "username": "gyurci08",
   "password": "12345678"
 }
 

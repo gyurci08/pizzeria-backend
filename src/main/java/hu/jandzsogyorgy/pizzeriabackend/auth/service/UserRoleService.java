@@ -8,6 +8,7 @@ import hu.jandzsogyorgy.pizzeriabackend.auth.repository.RoleRepository;
 import hu.jandzsogyorgy.pizzeriabackend.auth.repository.UserRepository;
 import hu.jandzsogyorgy.pizzeriabackend.auth.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserRoleService {

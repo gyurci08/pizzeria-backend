@@ -12,15 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -28,14 +29,22 @@ import java.util.List;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
-    private final List<String> allowedPaths = List.of("/api/menu-items");
+
+    private final RequestMatcher publicRequests = new OrRequestMatcher(
+            new AndRequestMatcher(
+                    new AntPathRequestMatcher("/api/auth/**"),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
+            ),
+            new AntPathRequestMatcher("/api/menu-items/**", HttpMethod.GET.name())
+    );
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return publicRequests.matches(request);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        if (allowedPaths.contains(request.getServletPath())) {
-            chain.doFilter(request, response);
-            return;
-        }
 
         String token = extractToken(request);
         if (token != null) {
