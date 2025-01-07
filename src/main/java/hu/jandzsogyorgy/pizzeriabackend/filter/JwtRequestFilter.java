@@ -23,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// TODO: Create a well-separated JwtAuthenticationFilter and a JwtTokenProvider, with optimized JwtUtil
 @Slf4j
 @Component
 @RequiredArgsConstructor

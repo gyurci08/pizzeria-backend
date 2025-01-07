@@ -11,6 +11,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+// TODO: Use records
 @Configuration
 @ConfigurationProperties(prefix = "cors")
 @Getter

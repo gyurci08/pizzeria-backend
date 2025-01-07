@@ -5,7 +5,6 @@ import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +23,9 @@ public class JwtUtil {
         return tokenType == TokenType.ACCESS ? jwtConfig.getTokenSecret() : jwtConfig.getRefreshSecret();
     }
 
+    // The rate should be in application.yaml
+    // fixedRate: start to start
+    // fixedDelayString: end to start
     @Scheduled(fixedRate = 3600000) // Run every hour
     private void removeExpiredTokensFromBlacklist() {
         Date now = new Date();
@@ -41,16 +43,18 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(TokenType tokenType, String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims( tokenType, token);
+        final Claims claims = extractAllClaims(tokenType, token);
         return claimsResolver.apply(claims);
     }
-    public Claims extractAllClaims( TokenType tokenType, String token) {
+
+    public Claims extractAllClaims(TokenType tokenType, String token) {
         return Jwts.parser()
                 .setSigningKey(getSecret(tokenType))
                 .parseClaimsJws(token)
                 .getBody();
     }
 
+    // TODO: User-related information should be put in claims here
     public String createAccessToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
@@ -61,6 +65,8 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, jwtConfig.getTokenSecret())
                 .compact();
     }
+
+
     public String createRefreshToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
@@ -71,16 +77,16 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, jwtConfig.getRefreshSecret())
                 .compact();
     }
-    public boolean validateToken(UserDetails userDetails,  TokenType tokenType, String token) {
+
+    public boolean validateToken(UserDetails userDetails, TokenType tokenType, String token) {
         if (userDetails == null) {
             return false;
         }
 
         try {
-            final String username = extractUsername( tokenType, token);
+            final String username = extractUsername(tokenType, token);
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(tokenType, token) && !isTokenBlacklisted(token));
-        }
-        catch (ExpiredJwtException | SignatureException e) {
+        } catch (ExpiredJwtException | SignatureException ex) {
             return false;
         }
     }
